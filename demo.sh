@@ -93,8 +93,8 @@ command.install() {
   oc apply -f tasks -n $cicd_prj
   oc create -f config/maven-settings-configmap.yaml -n $cicd_prj
   oc apply -f config/pipeline-pvc.yaml -n $cicd_prj
-  sed "s/demo-dev/$dev_prj/g" pipelines/pipeline-deploy-dev.yaml | sed -E "s#https://github.com/siamaksade#http://$GOGS_HOSTNAME/gogs#g" | oc apply -f - -n $cicd_prj
-  sed "s/demo-dev/$dev_prj/g" pipelines/pipeline-deploy-stage.yaml | sed -E "s/demo-stage/$stage_prj/g" | sed -E "s#https://github.com/siamaksade#http://$GOGS_HOSTNAME/gogs#g" | oc apply -f - -n $cicd_prj
+  sed "s/demo-dev/$dev_prj/g" pipelines/pipeline-deploy-dev.yaml | sed -E "s#https://github.com/siamaksade#https://$GOGS_HOSTNAME/gogs#g" | oc apply -f - -n $cicd_prj
+  sed "s/demo-dev/$dev_prj/g" pipelines/pipeline-deploy-stage.yaml | sed -E "s/demo-stage/$stage_prj/g" | sed -E "s#https://github.com/siamaksade#https://$GOGS_HOSTNAME/gogs#g" | oc apply -f - -n $cicd_prj
   
   oc apply -f triggers/gogs-triggerbinding.yaml -n $cicd_prj
   oc apply -f triggers/triggertemplate.yaml -n $cicd_prj
@@ -115,7 +115,7 @@ command.install() {
   Demo is installed! Give it a few minutes to finish deployments and then:
 
   1) Go to spring-petclinic Git repository in Gogs:
-     http://$GOGS_HOSTNAME/gogs/spring-petclinic.git
+     https://$GOGS_HOSTNAME/gogs/spring-petclinic.git
   
   2) Log into Gogs with username/password: gogs/gogs
       
@@ -128,10 +128,10 @@ command.install() {
   
   You can find further details at:
   
-  Gogs Git Server: http://$GOGS_HOSTNAME/explore/repos
-  Reports Server: http://$(oc get route reports-repo -o template --template='{{.spec.host}}' -n $cicd_prj)
+  Gogs Git Server: https://$GOGS_HOSTNAME/explore/repos
+  Reports Server: https://$(oc get route reports-repo -o template --template='{{.spec.host}}' -n $cicd_prj)
   SonarQube: https://$(oc get route sonarqube -o template --template='{{.spec.host}}' -n $cicd_prj)
-  Sonatype Nexus: http://$(oc get route nexus -o template --template='{{.spec.host}}' -n $cicd_prj)
+  Sonatype Nexus: https://$(oc get route nexus -o template --template='{{.spec.host}}' -n $cicd_prj)
 
 ############################################################################
 ############################################################################
